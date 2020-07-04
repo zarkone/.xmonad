@@ -21,4 +21,7 @@ main = do
           , ppHiddenNoWindows = xmobarColor "#333333" ""
           }
       } `additionalKeys`
-      [ ((mod4Mask, xK_b), sendMessage ToggleStruts) ]
+      [
+        ((mod4Mask, xK_b), sendMessage ToggleStruts)
+      , ((mod4Mask, xK_e), spawn "emacsclient -ca ''")
+      ]
