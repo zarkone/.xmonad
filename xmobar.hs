@@ -18,8 +18,23 @@ Config { font = "xft:Fixed-12"
        , commands = [
            Run StdinReader
            , Run Date "%b %d (%a) %H:%M" "date" 10
+           , Run Battery [ "--template" , "<acstatus>"
+                         , "--Low"      , "10"        -- units: %
+                         , "--High"     , "80"        -- units: %
+                         , "--low"      , "darkred"
+                         , "--normal"   , "darkorange"
+                         , "--high"     , "darkgreen"
+
+                         , "--" -- battery specific options
+                           -- discharging status
+                         , "-o"	, "<left>% (<timeleft>)"
+                           -- AC "on" status
+                         , "-O"	, "<fc=#dAA520>Charging</fc>"
+                           -- charged status
+                         , "-i"	, "<fc=#006000>Charged</fc>"
+                         ] 50
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% }{ <fc=green>%date%</fc> "
+       , template = " %StdinReader% }{ %battery% <fc=green>%date%</fc> "
        }
