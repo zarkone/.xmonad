@@ -14,7 +14,6 @@ main = do
       , terminal           = "urxvt"
       , manageHook         = manageDocks <+> manageHook defaultConfig
       , layoutHook         = avoidStruts  $ layoutHook defaultConfig
-
       -- this must be in this order, docksEventHook must be last
       , handleEventHook    = handleEventHook defaultConfig <+> docksEventHook
       , logHook            = dynamicLogWithPP xmobarPP
