@@ -17,6 +17,7 @@ Config { font = "xft:Fixed-12"
        , overrideRedirect = True
        , commands = [
            Run StdinReader
+           , Run Kbd [("ru", "ru"), ("us", "us")]
            , Run Date "%b %d (%a) %H:%M" "date" 10
            , Run Battery [ "--template" , "<acstatus>"
                          , "--Low"      , "10"        -- units: %
@@ -36,5 +37,5 @@ Config { font = "xft:Fixed-12"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% }{ %battery% <fc=green>%date%</fc> "
+       , template = " %StdinReader% }{ %kbd% %battery% <fc=green>%date%</fc> "
        }
