@@ -24,7 +24,7 @@ main = do
           }
       } `additionalKeysP`
       [
-        ("M-<Return>", spawn "urxvt")
+        ("M-<Return>", spawn "alacritty")
       , ("M-b", sendMessage ToggleStruts)
       , ("M-e", spawn "emacsclient -ca ''")
       , ("M-w", spawn "firefox")
