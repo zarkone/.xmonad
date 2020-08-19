@@ -1,4 +1,5 @@
 import XMonad
+import XMonad.Actions.Warp
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run(spawnPipe)
@@ -25,7 +26,8 @@ main = do
       } `additionalKeysP`
       [
         ("M-<Return>", spawn "alacritty")
-      , ("M-b", sendMessage ToggleStruts)
+      , ("M-C-b", sendMessage ToggleStruts)
+      , ("M-b", banishScreen LowerRight)
       , ("M-e", spawn "emacsclient -ca ''")
       , ("M-w", spawn "firefox")
       , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +1.5%")
