@@ -1,4 +1,4 @@
-Config { font = "xft:Fixed-12"
+Config { font = "xft:Fixed-10"
        , additionalFonts = []
        , borderColor = "black"
        , border = TopB
@@ -9,8 +9,8 @@ Config { font = "xft:Fixed-12"
        , textOffset = -1
        , iconOffset = -1
        , lowerOnStart = True
-       , pickBroadest = False
-       , persistent = False
+       , pickBroadest = True
+       , persistent = True
        , hideOnStart = False
        , iconRoot = "."
        , allDesktops = True

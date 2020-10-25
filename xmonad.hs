@@ -1,20 +1,24 @@
 import XMonad
 import XMonad.Actions.Warp
+import XMonad.Layout
+import XMonad.Layout.TwoPane (TwoPane(..))
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Actions.PhysicalScreens
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeysP)
 import System.IO
 
 main = do
     xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
-    xmonad $ defaultConfig
+    xmonad $ ewmh defaultConfig
       { modMask            = mod4Mask
       , normalBorderColor = "#221122"
       , focusedBorderColor = "#664466"
       , terminal           = "alacritty"
       , manageHook         = manageDocks <+> manageHook defaultConfig
-      , layoutHook         = avoidStruts  $ layoutHook defaultConfig
+      , layoutHook         = avoidStruts  $  Full ||| TwoPane (3/100) (1/2)
       -- this must be in this order, docksEventHook must be last
       , handleEventHook    = handleEventHook defaultConfig <+> docksEventHook
       , logHook            = dynamicLogWithPP xmobarPP
@@ -30,12 +34,17 @@ main = do
       , ("M-b", banishScreen LowerRight)
       , ("M-e", spawn "emacsclient -ca ''")
       , ("M-w", spawn "google-chrome-stable")
-      , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +1.5%")
-      , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@  -1.5%")
+      , ("M-p", spawn "rofi -show run")
+      , ("M-a", viewScreen def 0)
+      , ("M-s", viewScreen def 1)
+      , ("M-S-a", sendToScreen def 0)
+      , ("M-S-s", sendToScreen def 1)
+      , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +10%")
+      , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@  -10%")
       , ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
-      , ("<XF86MonBrightnessUp>", spawn "light -A 20")
-      , ("<XF86MonBrightnessDown>", spawn "light -U 20")
-      , ("C-<XF86AudioRaiseVolume>", spawn "light -A 20")
-      , ("C-<XF86AudioLowerVolume>", spawn "light -U 20")
+      , ("<XF86MonBrightnessUp>", spawn "light -A 10")
+      , ("<XF86MonBrightnessDown>", spawn "light -U 10")
+      , ("C-<XF86AudioRaiseVolume>", spawn "light -A 10")
+      , ("C-<XF86AudioLowerVolume>", spawn "light -U 10")
 
       ]
