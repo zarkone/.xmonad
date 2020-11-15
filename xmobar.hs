@@ -18,11 +18,12 @@ Config { font = "xft:JetBrains Mono:size=12:antialias=true"
            Run StdinReader
            , Run Mail [("Gmail: ", "~/Maildir/Gmail/INBOX"), ("Xapix", "~/Maildir/Xapix/INBOX")] "mail"
            , Run Kbd [("ru", "ru"), ("us", "us")]
-           , Run Date "%b %d (%a) %H:%M" "date" 10
+           , Run Date "%d.%m:%a" "date" 10
+           , Run Date "%H:%M" "time" 10
            , Run Memory ["-t","M: <usedratio>%"] 10
            , Run Com "/home/zarkone/.xmonad/disk-home.fish" ["home"] "diskhome" 1800
            ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader%  }{ %mail% -][- <fc=yellow>%kbd%</fc> %memory% <fc=magenta>%diskhome%</fc> <fc=green>%date%</fc> "
+       , template = " %StdinReader% [<fc=yellow>%kbd%</fc>] }{ %mail% <]<fc=#434>[%diskhome%][%date%]</fc> %memory% <fc=green>%time%</fc> "
        }
