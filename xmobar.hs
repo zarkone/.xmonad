@@ -1,5 +1,4 @@
-Config { font = "xft:JetBrains Mono:size=9:antialias=true"
-       , additionalFonts = []
+Config { font = "xft:JetBrains Mono:size=12:antialias=true"
        , borderColor = "black"
        , border = TopB
        , bgColor = "#221122"
@@ -17,25 +16,13 @@ Config { font = "xft:JetBrains Mono:size=9:antialias=true"
        , overrideRedirect = True
        , commands = [
            Run StdinReader
+           , Run Mail [("Gmail: ", "~/Maildir/Gmail/INBOX"), ("Xapix", "~/Maildir/Xapix/INBOX")] "mail"
            , Run Kbd [("ru", "ru"), ("us", "us")]
            , Run Date "%b %d (%a) %H:%M" "date" 10
-           , Run Battery [ "--template" , "<acstatus>"
-                         , "--Low"      , "10"        -- units: %
-                         , "--High"     , "80"        -- units: %
-                         , "--low"      , "darkred"
-                         , "--normal"   , "darkorange"
-                         , "--high"     , "darkgreen"
-
-                         , "--" -- battery specific options
-                           -- discharging status
-                         , "-o"	, "<left>% (<timeleft>)"
-                           -- AC "on" status
-                         , "-O"	, "<fc=#dAA520>Charging</fc>"
-                           -- charged status
-                         , "-i"	, "<fc=#006000>Charged</fc>"
-                         ] 50
-                    ]
+           , Run Memory ["-t","M: <usedratio>%"] 10
+           , Run Com "/home/zarkone/.xmonad/disk-home.fish" ["home"] "diskhome" 1800
+           ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% }{ %kbd% %battery% <fc=green>%date%</fc> "
+       , template = " %StdinReader%  }{ %mail% -][- <fc=yellow>%kbd%</fc> %memory% <fc=magenta>%diskhome%</fc> <fc=green>%date%</fc> "
        }

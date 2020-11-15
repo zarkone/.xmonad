@@ -1,6 +1,7 @@
 import XMonad
 import XMonad.Actions.Warp
 import XMonad.Layout
+import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.TwoPane (TwoPane(..))
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -18,7 +19,7 @@ main = do
       , focusedBorderColor = "#664466"
       , terminal           = "alacritty"
       , manageHook         = manageDocks <+> manageHook defaultConfig
-      , layoutHook         = avoidStruts  $  Full ||| TwoPane (3/100) (1/2)
+      , layoutHook         = avoidStruts $ smartBorders $ Full ||| TwoPane (3/100) (1/2)
       -- this must be in this order, docksEventHook must be last
       , handleEventHook    = handleEventHook defaultConfig <+> docksEventHook
       , logHook            = dynamicLogWithPP xmobarPP
@@ -33,14 +34,15 @@ main = do
       , ("M-C-b", sendMessage ToggleStruts)
       , ("M-b", banishScreen LowerRight)
       , ("M-e", spawn "emacsclient -ca ''")
-      , ("M-w", spawn "google-chrome-stable")
+      , ("M-w", spawn "firefox")
+      , ("M-C-w", spawn "vimb")
       , ("M-p", spawn "rofi -show run")
       , ("M-a", viewScreen def 0)
       , ("M-s", viewScreen def 1)
       , ("M-S-a", sendToScreen def 0)
       , ("M-S-s", sendToScreen def 1)
-      , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +10%")
-      , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@  -10%")
+      , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
+      , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@  -5%")
       , ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
       , ("<XF86MonBrightnessUp>", spawn "light -A 10")
       , ("<XF86MonBrightnessDown>", spawn "light -U 10")
