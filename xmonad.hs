@@ -37,6 +37,8 @@ main = do
       , ("M-w", spawn "firefox")
       , ("M-C-w", spawn "vimb")
       , ("M-p", spawn "rofi -show run")
+      , ("M-S-p", spawn "rofi -show drun")
+      , ("M-o", spawn "rofi -show window")
       , ("M-a", viewScreen def 0)
       , ("M-s", viewScreen def 1)
       , ("M-S-a", sendToScreen def 0)
