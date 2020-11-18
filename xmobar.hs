@@ -16,8 +16,9 @@ Config { font = "xft:JetBrains Mono:size=12:antialias=true"
        , overrideRedirect = True
        , commands = [
            Run StdinReader
-           -- , Run Mail [("Gmail: ", "~/Maildir/Gmail/INBOX"), ("Xapix", "~/Maildir/Xapix/INBOX")] "mail"
-           , Run Mail [("ZS:", "~/Maildir/Gmail/INBOX"), ("XX:", "~/Maildir/Xapix/INBOX")] "mail"
+           , Run Mail [("<fc=yellow><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Gmail/INBOX"),
+                       ("<fc=green><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Xapix/INBOX")]
+             "mail"
            , Run Kbd [("ru", "<fc=#212,yellow> ru </fc>"), ("us", " us ")]
            , Run Date "%d.%m:%a" "date" 10
            , Run Date "%H:%M" "time" 10
@@ -26,5 +27,5 @@ Config { font = "xft:JetBrains Mono:size=12:antialias=true"
            ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% :: %kbd% }{ <fc=#434><icon=/home/zarkone/.xmonad/xbm/filesystem.xbm/> %diskhome% </fc><fc=yellow><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> %mail% <fc=yellow><icon=/home/zarkone/.xmonad/xbm/memory.xbm/></fc> %memory% <fc=#434>%date%</fc> <fc=green>%time%</fc> "
+       , template = " %StdinReader% :: %kbd% }{ <fc=#434><icon=/home/zarkone/.xmonad/xbm/filesystem.xbm/> %diskhome% </fc> %mail% <fc=cyan><icon=/home/zarkone/.xmonad/xbm/memory.xbm/></fc> %memory% <fc=#434>%date%</fc> <fc=green>%time%</fc> "
        }
