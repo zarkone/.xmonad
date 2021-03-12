@@ -20,12 +20,14 @@ Config { font = "xft:JetBrains Mono:size=12:antialias=true"
                        ("<fc=green><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Xapix/INBOX")]
              "mail"
            , Run Kbd [("ru", "<fc=#212,yellow> ru </fc>"), ("us", " us ")]
-           , Run Date "%d.%m:%a" "date" 10
+           , Run Date "%d/%m[%a]" "date" 10
            , Run Date "%H:%M" "time" 10
            , Run Memory ["-t","<usedratio>%"] 10
-           , Run Com "/home/zarkone/.xmonad/disk-home.fish" ["home"] "diskhome" 1800
+           , Run Com "/home/zarkone/.xmonad/disk.fish" ["home"] "diskhome" 1800
+           , Run Com "/home/zarkone/.xmonad/disk.fish" ["nixos"] "disknixos" 1800
+           , Run Com "/home/zarkone/.xmonad/dunstdnd.fish" [] "dusntdnd" 10
            ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% :: %kbd% }{ <fc=#434><icon=/home/zarkone/.xmonad/xbm/filesystem.xbm/> %diskhome% </fc> %mail% <fc=cyan><icon=/home/zarkone/.xmonad/xbm/memory.xbm/></fc> %memory% <fc=#434>%date%</fc> <fc=green>%time%</fc> "
+       , template = " %StdinReader% :: %kbd% }{ %mail% <fc=#800080> %disknixos% %diskhome% </fc><icon=/home/zarkone/.xmonad/xbm/memory.xbm/> %memory%<fc=green> %date% </fc><fc=yellow>%time%</fc> %dusntdnd%"
        }
