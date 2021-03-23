@@ -29,6 +29,7 @@ main = do
           normalBorderColor = "#221122",
           focusedBorderColor = "#664466",
           terminal = "alacritty",
+          workspaces = ["code","www","term","work","chat","zoom","etc","mus","video"],
           manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig,
           layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPane (3 / 100) (1 / 2),
           -- this must be in this order, docksEventHook must be last
