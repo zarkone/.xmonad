@@ -17,9 +17,8 @@ import XMonad.Util.EZConfig
 -- module imports and other top level definitions
 
 appManagedHook = composeAll
-   [ className =? "zoom" --> doShift "6" 
+   [ className =? "zoom" --> doShift "zoom"
    ]
-
 
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
