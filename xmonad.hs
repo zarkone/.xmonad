@@ -20,6 +20,37 @@ appManagedHook = composeAll
    [ className =? "zoom" --> doShift "zoom"
    ]
 
+rebindings = [
+    ("M-<Return>", spawn "alacritty")
+  , ("M-<Escape>", spawn "dunstctl set-paused toggle")
+    -- ("<Pause>", spawn "/home/zarkone/.config/fish/coding-music-toggle.fish"),
+  , ("<Pause>", spawn "mpc toggle")
+  , ("M-m", spawn "alacritty -e ncmpcpp")
+  , ("<Print>", spawn "maim -s ~/maim/$, (date +'%s-%d-%m-%y_%H:%M:%S').png")
+  , ("M-C-l", spawn "slock")
+  , ("M-t", spawn "alacritty -e bash -c 'xclip -selection c -o | xargs trans | less -r'")
+  , ("M-C-p", spawn "systemctl suspend")
+  , ("M-C-b", sendMessage ToggleStruts)
+  , ("M-b", banishScreen LowerRight)
+  , ("M-e", spawn "emacsclient -ca ''")
+  , ("M-w", spawn "firefox")
+  , ("M-C-w", spawn "vimb")
+  , ("M-u", spawn "pavucontrol")
+  , ("M-y", spawn "blueman-manager")
+  , ("M-p", spawn "rofi -show run")
+  , ("M-o", spawn "rofi -combi-modi window,drun -show combi -modi combi")
+  , ("M-a", viewScreen def 0)
+  , ("M-s", viewScreen def 1)
+  , ("M-S-a", sendToScreen def 0)
+  , ("M-S-s", sendToScreen def 1)
+  , ("<XF86Eject>", spawn "mv /home/zarkone/Maildir/Gmail/INBOX/new/* /home/zarkone/Maildir/Gmail/INBOX/cur/; mv /home/zarkone/Maildir/Xapix/INBOX/new/* /home/zarkone/Maildir/Xapix/INBOX/cur/")
+  , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
+  , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@  -5%")
+  , ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+  , ("C-<XF86AudioRaiseVolume>", spawn "xrandr --output HDMI-1 --brightness 1")
+  , ("C-<XF86AudioLowerVolume>", spawn "xrandr --output HDMI-1 --brightness 0.5")
+  ]
+
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
   xmonad $
@@ -43,32 +74,4 @@ main = do
                   ppHiddenNoWindows = xmobarColor "#333333" ""
                 }
         }
-      `additionalKeysP` [ ("M-<Return>", spawn "alacritty"),
-                          ("M-<Escape>", spawn "dunstctl set-paused toggle"),
-                          -- ("<Pause>", spawn "/home/zarkone/.config/fish/coding-music-toggle.fish"),
-                          ("<Pause>", spawn "mpc toggle"),
-                          ("M-m", spawn "alacritty -e ncmpcpp"),
-                          ("<Print>", spawn "maim -s ~/maim/$(date +'%d-%m-%y_%H-%M-%S').png"),
-                          ("M-C-l", spawn "slock"),
-                          ("M-t", spawn "alacritty -e bash -c 'xclip -selection c -o | xargs trans | less -r'"),
-                          ("M-C-p", spawn "systemctl suspend"),
-                          ("M-C-b", sendMessage ToggleStruts),
-                          ("M-b", banishScreen LowerRight),
-                          ("M-e", spawn "emacsclient -ca ''"),
-                          ("M-w", spawn "firefox"),
-                          ("M-C-w", spawn "vimb"),
-                          ("M-u", spawn "pavucontrol"),
-                          ("M-y", spawn "blueman-manager"),
-                          ("M-p", spawn "rofi -show run"),
-                          ("M-o", spawn "rofi -combi-modi window,drun -show combi -modi combi"),
-                          ("M-a", viewScreen def 0),
-                          ("M-s", viewScreen def 1),
-                          ("M-S-a", sendToScreen def 0),
-                          ("M-S-s", sendToScreen def 1),
-                          ("<XF86Eject>", spawn "mv /home/zarkone/Maildir/Gmail/INBOX/new/* /home/zarkone/Maildir/Gmail/INBOX/cur/; mv /home/zarkone/Maildir/Xapix/INBOX/new/* /home/zarkone/Maildir/Xapix/INBOX/cur/"),
-                          ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%"),
-                          ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@  -5%"),
-                          ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle"),
-                          ("C-<XF86AudioRaiseVolume>", spawn "xrandr --output HDMI-1 --brightness 1"),
-                          ("C-<XF86AudioLowerVolume>", spawn "xrandr --output HDMI-1 --brightness 0.5")
-                        ]
+      `additionalKeysP` rebindings
