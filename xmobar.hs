@@ -1,4 +1,4 @@
-Config { font = "xft:JetBrains Mono:size=12:antialias=true"
+Config { font = "xft:Iosevka:size=13:antialias=true"
        , borderColor = "black"
        , border = TopB
        , bgColor = "#221122"
@@ -23,11 +23,13 @@ Config { font = "xft:JetBrains Mono:size=12:antialias=true"
            , Run Date "%d/%m[%a]" "date" 10
            , Run Date "%H:%M" "time" 10
            , Run Memory ["-t","<usedratio>%"] 10
+           -- workaround for Com: pamixer returns 1 in case of muted, Com doesn't like it
+           , Run Com "/home/zarkone/.xmonad/pamixer.fish" [] "pamixer" 5
            , Run Com "/home/zarkone/.xmonad/disk.fish" ["home"] "diskhome" 1800
            , Run Com "/home/zarkone/.xmonad/disk.fish" ["nixos"] "disknixos" 1800
            , Run Com "/home/zarkone/.xmonad/dunstdnd.fish" [] "dusntdnd" 10
            ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% :: %kbd% }{ %mail% <fc=#800080> %disknixos% %diskhome% </fc><icon=/home/zarkone/.xmonad/xbm/memory.xbm/> %memory%<fc=green> %date% </fc><fc=yellow>%time%</fc> %dusntdnd%"
+       , template = " %StdinReader% :: %kbd% }{ %mail% <fc=#800080> %disknixos% %diskhome% %pamixer%</fc><icon=/home/zarkone/.xmonad/xbm/memory.xbm/> %memory%<fc=green> %date% </fc><fc=yellow>%time%</fc> %dusntdnd%"
        }
