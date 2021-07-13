@@ -7,7 +7,7 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout
 import XMonad.Layout.NoBorders (smartBorders)
-import XMonad.Layout.TwoPane (TwoPane (..))
+import XMonad.Layout.TwoPanePersistent (TwoPanePersistent (..))
 import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Run (spawnPipe)
 
@@ -22,11 +22,14 @@ appManagedHook = composeAll
 
 rebindings = [
     ("M-<Return>", spawn "alacritty")
-  , ("M-<Escape>", spawn "dunstctl set-paused toggle")
+  , ("M-`", spawn "dunstctl set-paused toggle")
     -- ("<Pause>", spawn "/home/zarkone/.config/fish/coding-music-toggle.fish"),
   , ("<Pause>", spawn "mpc toggle")
+  -- , ("<XF86AudioPause>", spawn "mpc pause")
+  -- , ("<XF86AudioPlay>", spawn "mpc play")
   , ("M-m", spawn "alacritty -e ncmpcpp")
-  , ("<Print>", spawn "maim -s ~/maim/$, (date +'%s-%d-%m-%y_%H:%M:%S').png")
+  , ("M-C-h", spawn "alacritty -e htop")
+  , ("<Print>", spawn "maim -s ~/maim/$(date +'%s-%d-%m-%y_%H:%M:%S').png")
   , ("M-C-l", spawn "slock")
   , ("M-t", spawn "alacritty -e bash -c 'xclip -selection c -o | xargs trans | less -r'")
   , ("M-C-p", spawn "systemctl suspend")
@@ -34,7 +37,6 @@ rebindings = [
   , ("M-b", banishScreen LowerRight)
   , ("M-e", spawn "emacsclient -ca ''")
   , ("M-w", spawn "firefox")
-  , ("M-C-w", spawn "vimb")
   , ("M-u", spawn "pavucontrol")
   , ("M-y", spawn "blueman-manager")
   , ("M-p", spawn "rofi -show run")
@@ -44,9 +46,9 @@ rebindings = [
   , ("M-S-a", sendToScreen def 0)
   , ("M-S-s", sendToScreen def 1)
   , ("<XF86Eject>", spawn "mv /home/zarkone/Maildir/Gmail/INBOX/new/* /home/zarkone/Maildir/Gmail/INBOX/cur/; mv /home/zarkone/Maildir/Xapix/INBOX/new/* /home/zarkone/Maildir/Xapix/INBOX/cur/")
-  , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
-  , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@  -5%")
-  , ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+  , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 10")
+  , ("<XF86AudioLowerVolume>", spawn "pamixer -d 10")
+  , ("<XF86AudioMute>", spawn "pamixer -t")
   , ("C-<XF86AudioRaiseVolume>", spawn "xrandr --output HDMI-1 --brightness 1")
   , ("C-<XF86AudioLowerVolume>", spawn "xrandr --output HDMI-1 --brightness 0.5")
   ]
@@ -62,7 +64,7 @@ main = do
           terminal = "alacritty",
           workspaces = ["code","www","term","work","chat","zoom","etc","mus","video"],
           manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig,
-          layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPane (3 / 100) (1 / 2),
+          layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2),
           -- this must be in this order, docksEventHook must be last
           handleEventHook = handleEventHook defaultConfig <+> docksEventHook,
           logHook =
