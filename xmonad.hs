@@ -16,14 +16,16 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Util.EZConfig
 -- module imports and other top level definitions
 
+myWorkspaces = ["code","www","term","work","chat","zoom","plan","media","etc"]
+zoomWorkspace = myWorkspaces !! 5
+
 appManagedHook = composeAll
-   [ className =? "zoom" --> doShift "zoom"
-   ]
+   [ className =? "zoom" --> doShift zoomWorkspace]
 
 rebindings = [
     ("M-<Return>", spawn "alacritty")
   , ("M-`", spawn "dunstctl set-paused toggle")
-    -- ("<Pause>", spawn "/home/zarkone/.config/fish/coding-music-toggle.fish"),
+  -- ,  ("<Pause>", spawn "/home/zarkone/.config/fish/coding-music-toggle.fish")
   , ("<Pause>", spawn "mpc toggle")
   -- , ("<XF86AudioPause>", spawn "mpc pause")
   -- , ("<XF86AudioPlay>", spawn "mpc play")
@@ -35,7 +37,8 @@ rebindings = [
   , ("M-C-p", spawn "systemctl suspend")
   , ("M-C-b", sendMessage ToggleStruts)
   , ("M-b", banishScreen LowerRight)
-  , ("M-e", spawn "emacsclient -ca ''")
+  , ("M-e", spawn "alacritty -e emacsclient -nw -a ''")
+  -- , ("M-e", spawn "emacsclient -ca ''")
   , ("M-w", spawn "firefox")
   , ("M-u", spawn "pavucontrol")
   , ("M-y", spawn "blueman-manager")
@@ -45,9 +48,9 @@ rebindings = [
   , ("M-s", viewScreen def 1)
   , ("M-S-a", sendToScreen def 0)
   , ("M-S-s", sendToScreen def 1)
-  , ("<XF86Eject>", spawn "mv /home/zarkone/Maildir/Gmail/INBOX/new/* /home/zarkone/Maildir/Gmail/INBOX/cur/; mv /home/zarkone/Maildir/Xapix/INBOX/new/* /home/zarkone/Maildir/Xapix/INBOX/cur/")
-  , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 10")
-  , ("<XF86AudioLowerVolume>", spawn "pamixer -d 10")
+  , ("<XF86Eject>", spawn "mv /home/zarkone/Maildir/Gmail/INBOX/new/* /home/zarkone/Maildir/Gmail/INBOX/cur/; mv /home/zarkone/Maildir/Pitch/INBOX/new/* /home/zarkone/Maildir/Pitch/INBOX/cur/")
+  , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 5")
+  , ("<XF86AudioLowerVolume>", spawn "pamixer -d 5")
   , ("<XF86AudioMute>", spawn "pamixer -t")
   , ("C-<XF86AudioRaiseVolume>", spawn "xrandr --output HDMI-1 --brightness 1")
   , ("C-<XF86AudioLowerVolume>", spawn "xrandr --output HDMI-1 --brightness 0.5")
@@ -62,7 +65,7 @@ main = do
           normalBorderColor = "#221122",
           focusedBorderColor = "#664466",
           terminal = "alacritty",
-          workspaces = ["code","www","term","work","chat","zoom","etc","mus","video"],
+          workspaces = myWorkspaces,
           manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig,
           layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2),
           -- this must be in this order, docksEventHook must be last
@@ -72,7 +75,7 @@ main = do
               xmobarPP
                 { ppOutput = hPutStrLn xmproc,
                   ppTitle = xmobarColor "magenta" "" . shorten 20,
-                  ppCurrent = xmobarColor "yellow" "",
+                  ppCurrent = (xmobarColor "yellow" "#110011") . (wrap "[" "]"),
                   ppHiddenNoWindows = xmobarColor "#333333" ""
                 }
         }

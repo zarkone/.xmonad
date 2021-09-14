@@ -1,6 +1,5 @@
 Config { font = "xft:Iosevka:size=13:antialias=true"
-       , borderColor = "black"
-       , border = TopB
+       , border = NoBorder
        , bgColor = "#221122"
        , fgColor = "cyan"
        , alpha = 255
@@ -17,7 +16,7 @@ Config { font = "xft:Iosevka:size=13:antialias=true"
        , commands = [
            Run StdinReader
            , Run Mail [("<fc=yellow><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Gmail/INBOX"),
-                       ("<fc=green><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Xapix/INBOX")]
+                       ("<fc=#6b53ff><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Pitch/INBOX")]
              "mail"
            , Run Kbd [("ru", "<fc=#212,yellow> ru </fc>"), ("us", " us ")]
            , Run Date "%d/%m[%a]" "date" 10
