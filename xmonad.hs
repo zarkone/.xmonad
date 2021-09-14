@@ -25,6 +25,12 @@ wrapWithTerm x = term ++ " -e " ++ x
 appManagedHook = composeAll
    [ className =? "zoom" --> doShift zoomWorkspace]
 
+screenshot = "maim -s ~/maim/$(date +'%s-%d-%m-%y_%H:%M:%S').png"
+
+clearUnreadMail =
+  "mv /home/zarkone/Maildir/Gmail/INBOX/new/* /home/zarkone/Maildir/Gmail/INBOX/cur/;"
+  ++ "mv /home/zarkone/Maildir/Pitch/INBOX/new/* /home/zarkone/Maildir/Pitch/INBOX/cur/"
+
 rebindings = [
     ("M-<Return>", spawn term)
   , ("M-`", spawn "dunstctl set-paused toggle")
@@ -34,7 +40,7 @@ rebindings = [
   -- , ("<XF86AudioPlay>", spawn "mpc play")
   , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
   , ("M-C-h", spawn $ wrapWithTerm "htop")
-  , ("<Print>", spawn "maim -s ~/maim/$(date +'%s-%d-%m-%y_%H:%M:%S').png")
+  , ("<Print>", spawn screenshot)
   , ("M-C-l", spawn "slock")
   , ("M-t", spawn $ wrapWithTerm "bash -c 'xclip -selection c -o | xargs trans | less -r'")
   , ("M-C-p", spawn "systemctl suspend")
@@ -51,12 +57,10 @@ rebindings = [
   , ("M-s", viewScreen def 1)
   , ("M-S-a", sendToScreen def 0)
   , ("M-S-s", sendToScreen def 1)
-  , ("<XF86Eject>", spawn "mv /home/zarkone/Maildir/Gmail/INBOX/new/* /home/zarkone/Maildir/Gmail/INBOX/cur/; mv /home/zarkone/Maildir/Pitch/INBOX/new/* /home/zarkone/Maildir/Pitch/INBOX/cur/")
+  , ("<XF86Eject>", spawn clearUnreadMail)
   , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 5")
   , ("<XF86AudioLowerVolume>", spawn "pamixer -d 5")
   , ("<XF86AudioMute>", spawn "pamixer -t")
-  , ("C-<XF86AudioRaiseVolume>", spawn "xrandr --output HDMI-1 --brightness 1")
-  , ("C-<XF86AudioLowerVolume>", spawn "xrandr --output HDMI-1 --brightness 0.5")
   ]
 
 main = do
