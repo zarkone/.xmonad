@@ -16,7 +16,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Util.EZConfig
 -- module imports and other top level definitions
 
-myWorkspaces = ["code","www","term","work","chat","zoom","plan","media","etc"]
+myWorkspaces = ["!","@","#","$","%","^","&","*","("]
 zoomWorkspace = myWorkspaces !! 5
 
 term = "alacritty"
@@ -47,7 +47,6 @@ rebindings = [
   , ("M-C-b", sendMessage ToggleStruts)
   , ("M-b", banishScreen LowerRight)
   , ("M-e", spawn $ wrapWithTerm "emacsclient -nw -a ''")
-  -- , ("M-e", spawn "emacsclient -ca ''")
   , ("M-w", spawn "firefox")
   , ("M-u", spawn "pavucontrol")
   , ("M-y", spawn "blueman-manager")
@@ -69,8 +68,8 @@ main = do
     ewmh
       defaultConfig
         { modMask = mod4Mask,
-          normalBorderColor = "#221122",
-          focusedBorderColor = "#664466",
+          normalBorderColor = "#212",
+          focusedBorderColor = "#646",
           terminal = "alacritty",
           workspaces = myWorkspaces,
           manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig,
@@ -81,9 +80,10 @@ main = do
             dynamicLogWithPP
               xmobarPP
                 { ppOutput = hPutStrLn xmproc,
-                  ppTitle = xmobarColor "magenta" "" . shorten 20,
-                  ppCurrent = (xmobarColor "yellow" "#110011") . (wrap "[" "]"),
-                  ppHiddenNoWindows = xmobarColor "#333333" ""
+                  ppTitle = xmobarColor "magenta" "" . shorten 120,
+                  ppCurrent = xmobarColor "#212" "#f0f" . wrap " " " ",
+                  ppHidden = xmobarColor "cyan" "#212",
+                  ppHiddenNoWindows = xmobarColor "#777" ""
                 }
         }
       `additionalKeysP` rebindings

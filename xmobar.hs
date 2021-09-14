@@ -30,5 +30,5 @@ Config { font = "xft:Iosevka:size=13:antialias=true"
            ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% :: %kbd% }{ %mail% <fc=#800080> %disknixos% %diskhome% %pamixer%</fc><icon=/home/zarkone/.xmonad/xbm/memory.xbm/> %memory%<fc=green> %date% </fc><fc=yellow>%time%</fc> %dusntdnd%"
+       , template = " %StdinReader% ::  }{ :: %kbd% %mail% <fc=#800080> %disknixos% %diskhome% %pamixer%</fc><icon=/home/zarkone/.xmonad/xbm/memory.xbm/> %memory%<fc=green> %date% </fc><fc=yellow>%time%</fc> %dusntdnd%"
        }
