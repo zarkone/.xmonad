@@ -19,25 +19,28 @@ import XMonad.Util.EZConfig
 myWorkspaces = ["code","www","term","work","chat","zoom","plan","media","etc"]
 zoomWorkspace = myWorkspaces !! 5
 
+term = "alacritty"
+wrapWithTerm x = term ++ " -e " ++ x
+
 appManagedHook = composeAll
    [ className =? "zoom" --> doShift zoomWorkspace]
 
 rebindings = [
-    ("M-<Return>", spawn "alacritty")
+    ("M-<Return>", spawn term)
   , ("M-`", spawn "dunstctl set-paused toggle")
   -- ,  ("<Pause>", spawn "/home/zarkone/.config/fish/coding-music-toggle.fish")
   , ("<Pause>", spawn "mpc toggle")
   -- , ("<XF86AudioPause>", spawn "mpc pause")
   -- , ("<XF86AudioPlay>", spawn "mpc play")
-  , ("M-m", spawn "alacritty -e ncmpcpp")
-  , ("M-C-h", spawn "alacritty -e htop")
+  , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
+  , ("M-C-h", spawn $ wrapWithTerm "htop")
   , ("<Print>", spawn "maim -s ~/maim/$(date +'%s-%d-%m-%y_%H:%M:%S').png")
   , ("M-C-l", spawn "slock")
-  , ("M-t", spawn "alacritty -e bash -c 'xclip -selection c -o | xargs trans | less -r'")
+  , ("M-t", spawn $ wrapWithTerm "bash -c 'xclip -selection c -o | xargs trans | less -r'")
   , ("M-C-p", spawn "systemctl suspend")
   , ("M-C-b", sendMessage ToggleStruts)
   , ("M-b", banishScreen LowerRight)
-  , ("M-e", spawn "alacritty -e emacsclient -nw -a ''")
+  , ("M-e", spawn $ wrapWithTerm "emacsclient -nw -a ''")
   -- , ("M-e", spawn "emacsclient -ca ''")
   , ("M-w", spawn "firefox")
   , ("M-u", spawn "pavucontrol")
