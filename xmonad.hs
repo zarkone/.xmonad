@@ -19,7 +19,7 @@ import XMonad.Util.EZConfig
 myWorkspaces = ["!","@","#","$","%","^","&","*","("]
 zoomWorkspace = myWorkspaces !! 5
 
-term = "alacritty"
+ term = "alacritty"
 wrapWithTerm x = term ++ " -e " ++ x
 
 appManagedHook = composeAll
@@ -73,7 +73,11 @@ main = do
           terminal = "alacritty",
           workspaces = myWorkspaces,
           manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig,
-          layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2),
+          -- layoutHook = avoidStruts  $ layoutHook defaultConfig,
+
+          layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (Tall 1 (3/100) (3/5)),
+          -- layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2),
+          -- layoutHook = avoidStruts $ smartBorders $ Full ||| splitHorizontally (3/100)(1 / 2),
           -- this must be in this order, docksEventHook must be last
           handleEventHook = handleEventHook defaultConfig <+> docksEventHook,
           logHook =
