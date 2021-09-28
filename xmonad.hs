@@ -41,7 +41,7 @@ rebindings = [
   , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
   , ("M-C-h", spawn $ wrapWithTerm "htop")
   , ("<Print>", spawn screenshot)
-  , ("M-C-l", spawn "slock")
+  , ("M-C-l", spawn "betterlockscreen --lock")
   , ("M-t", spawn $ wrapWithTerm "bash -c 'xclip -selection c -o | xargs trans | less -r'")
   , ("M-C-p", spawn "systemctl suspend")
   , ("M-C-b", sendMessage ToggleStruts)
@@ -74,8 +74,9 @@ main = do
           workspaces = myWorkspaces,
           manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig,
           -- layoutHook = avoidStruts  $ layoutHook defaultConfig,
+          layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (TwoPanePersistent Nothing (3 / 100) (3 / 5)),
           -- layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2),
-          layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (Tall 1 (3/100) (3/5)),
+          -- layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (Tall 2 (3/100) (4/5)),
           -- this must be in this order, docksEventHook must be last
           handleEventHook = handleEventHook defaultConfig <+> docksEventHook,
           logHook =
