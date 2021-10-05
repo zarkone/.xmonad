@@ -72,7 +72,7 @@ main = do
       defaultConfig
         { modMask = mod4Mask,
           normalBorderColor = "#212",
-          focusedBorderColor = "#646",
+          focusedBorderColor = "purple",
           terminal = "alacritty",
           workspaces = myWorkspaces,
           manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig,
