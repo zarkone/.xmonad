@@ -32,16 +32,19 @@ clearUnreadMail =
   ++ "mv /home/zarkone/Maildir/Pitch/INBOX/new/* /home/zarkone/Maildir/Pitch/INBOX/cur/"
 
 rebindings = [
-    ("M-<Return>", spawn term)
+  ("M-<Return>", spawn term)
+  , ("M-<Backspace>", spawn "dunstctl close-all")
+  , ("M-]", spawn "dunstctl history-pop")
   , ("M-`", spawn "dunstctl set-paused toggle")
-  -- ,  ("<Pause>", spawn "/home/zarkone/.config/fish/coding-music-toggle.fish")
+    -- ,  ("<Pause>", spawn "/home/zarkone/.config/fish/coding-music-toggle.fish")
   , ("<Pause>", spawn "mpc toggle")
   , ("M-<Right>", spawn "mpc next")
   , ("M-<Left>", spawn "mpc prev")
-  -- , ("<XF86AudioPause>", spawn "mpc pause")
-  -- , ("<XF86AudioPlay>", spawn "mpc play")
+    -- , ("<XF86AudioPause>", spawn "mpc pause")
+    -- , ("<XF86AudioPlay>", spawn "mpc play")
   , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
   , ("M-z", spawn $ wrapWithTerm "htop")
+  , ("M-f", spawn $ wrapWithTerm "ranger")
   , ("<Print>", spawn screenshot)
   , ("M-C-l", spawn "betterlockscreen --lock --off 10 --time-format '%H:%M'")
   , ("M-t", spawn $ wrapWithTerm "bash -c 'xclip -selection c -o | xargs trans | less -r'")
@@ -69,27 +72,27 @@ main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
   xmonad $
     ewmh
-      defaultConfig
-        { modMask = mod4Mask,
-          normalBorderColor = "#212",
-          focusedBorderColor = "purple",
-          terminal = "alacritty",
-          workspaces = myWorkspaces,
-          manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig,
-          -- layoutHook = avoidStruts  $ layoutHook defaultConfig,
-          layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (TwoPanePersistent Nothing (3 / 100) (3 / 5)),
-          -- layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2),
-          -- layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (Tall 2 (3/100) (4/5)),
-          -- this must be in this order, docksEventHook must be last
-          handleEventHook = handleEventHook defaultConfig <+> docksEventHook,
-          logHook =
-            dynamicLogWithPP
-              xmobarPP
-                { ppOutput = hPutStrLn xmproc,
-                  ppTitle = xmobarColor "magenta" "" . shorten 30,
-                  ppCurrent = xmobarColor "#212" "#f0f" . wrap " " " ",
-                  ppHidden = xmobarColor "cyan" "#212",
-                  ppHiddenNoWindows = xmobarColor "#777" ""
-                }
+    defaultConfig
+    { modMask = mod4Mask
+    , normalBorderColor = "#212"
+    , focusedBorderColor = "purple"
+    , terminal = "alacritty"
+    , workspaces = myWorkspaces
+    , manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig
+      -- layoutHook = avoidStruts  $ layoutHook defaultConfig,
+    , layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (TwoPanePersistent Nothing (3 / 100) (3 / 5))
+      -- layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2),
+      -- layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (Tall 2 (3/100) (4/5)),
+      -- this must be in this order, docksEventHook must be last
+    , handleEventHook = handleEventHook defaultConfig <+> docksEventHook
+    , logHook =
+        dynamicLogWithPP
+        xmobarPP
+        { ppOutput = hPutStrLn xmproc
+        , ppTitle = xmobarColor "magenta" "" . shorten 30
+        , ppCurrent = xmobarColor "#212" "#f0f" . wrap " " " "
+        , ppHidden = xmobarColor "cyan" "#212"
+        , ppHiddenNoWindows = xmobarColor "#777" ""
         }
-      `additionalKeysP` rebindings
+    }
+    `additionalKeysP` rebindings
