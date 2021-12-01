@@ -10,6 +10,7 @@ import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.TwoPanePersistent (TwoPanePersistent (..))
 import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Run (spawnPipe)
+import qualified XMonad.StackSet as W
 
 import XMonad
 import XMonad.Hooks.ManageDocks
@@ -20,7 +21,8 @@ myWorkspaces = ["!","@","#","$","%","^","&","*","("]
 zoomWorkspace = myWorkspaces !! 5
 
 term = "alacritty"
-wrapWithTerm x = term ++ " -e " ++ x
+wrapWithTerm cmd = term ++ " -e " ++ cmd
+wrapWithLess cmd = "bash -c '" ++ cmd ++ " 2>/dev/null | less -R'"
 
 appManagedHook = composeAll
    [ className =? "zoom" --> doShift zoomWorkspace]
@@ -32,7 +34,7 @@ clearUnreadMail =
   ++ "mv /home/zarkone/Maildir/Pitch/INBOX/new/* /home/zarkone/Maildir/Pitch/INBOX/cur/"
 
 rebindings = [
-  ("M-<Return>", spawn term)
+  ("M-=", spawn term)
   , ("M-<Backspace>", spawn "dunstctl close-all")
   , ("M-]", spawn "dunstctl history-pop")
   , ("M-`", spawn "dunstctl set-paused toggle")
@@ -42,26 +44,51 @@ rebindings = [
   , ("M-<Left>", spawn "mpc prev")
     -- , ("<XF86AudioPause>", spawn "mpc pause")
     -- , ("<XF86AudioPlay>", spawn "mpc play")
-  , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
-  , ("M-z", spawn $ wrapWithTerm "htop")
-  , ("M-f", spawn $ wrapWithTerm "ranger")
   , ("<Print>", spawn screenshot)
   , ("M-C-l", spawn "betterlockscreen --lock --off 10 --time-format '%H:%M'")
-  , ("M-t", spawn $ wrapWithTerm "bash -c 'xclip -selection c -o | xargs trans | less -r'")
   , ("M-C-p", spawn "systemctl suspend")
   , ("M-C-b", sendMessage ToggleStruts)
+
+  -- apps
+  , ("M-v", spawn $ wrapWithTerm $ wrapWithLess "curl wttr.in")
+  , ("M-.", spawn $ wrapWithTerm $ wrapWithLess "xclip -selection c -o | xargs trans")
+  , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
+  , ("M-z", spawn $ wrapWithTerm "htop")
+  , ("M-x", kill)
   , ("M-b", banishScreen LowerRight)
-  , ("M-e", spawn $ wrapWithTerm "emacsclient -nw -a ''")
+  , ("M-f", spawn $ wrapWithTerm "emacsclient -nw -a ''")
   , ("M-w", spawn "firefox")
-  , ("M-C-w", spawn "google-chrome-beta")
   , ("M-u", spawn "pavucontrol")
-  , ("M-y", spawn "blueman-manager")
   , ("M-p", spawn "rofi -location 2 -show run ")
-  , ("M-o", spawn "rofi -location 2 -combi-modi window,drun -show combi -modi combi")
-  , ("M-a", viewScreen def 0)
-  , ("M-s", viewScreen def 1)
-  , ("M-S-a", sendToScreen def 0)
-  , ("M-S-s", sendToScreen def 1)
+  , ("M-l", spawn "rofi -location 2 -combi-modi window,drun -show combi -modi combi")
+  , ("M-y", spawn "blueman-manager")
+  , ("M-W", spawn "google-chrome-beta")
+  -- windows
+  , ("M-a", windows $ W.greedyView "!")
+  , ("M-r", windows $ W.greedyView "@")
+  , ("M-s", windows $ W.greedyView "#")
+  , ("M-t", windows $ W.greedyView "$")
+  , ("M-g", windows $ W.greedyView "%")
+  , ("M-n", windows $ W.greedyView "^")
+  , ("M-e", windows $ W.greedyView "&")
+  , ("M-i", windows $ W.greedyView "*")
+  , ("M-o", windows $ W.greedyView "(")
+
+  , ("M-S-a", windows $ W.shift "!")
+  , ("M-S-r", windows $ W.shift "@")
+  , ("M-S-s", windows $ W.shift "#")
+  , ("M-S-t", windows $ W.shift "$")
+  , ("M-S-g", windows $ W.shift "%")
+  , ("M-S-n", windows $ W.shift "^")
+  , ("M-S-e", windows $ W.shift "&")
+  , ("M-S-i", windows $ W.shift "*")
+  , ("M-S-o", windows $ W.shift "(")
+
+  -- multimonitor
+  -- , ("M-a", viewScreen def 0)
+  -- , ("M-s", viewScreen def 1)
+  -- , ("M-S-a", sendToScreen def 0)
+  -- , ("M-S-s", sendToScreen def 1)
   , ("<XF86Eject>", spawn clearUnreadMail)
   , ("<XF86AudioRaiseVolume>", spawn "pamixer -i 5")
   , ("<XF86AudioLowerVolume>", spawn "pamixer -d 5")
