@@ -24,6 +24,8 @@ term = "alacritty"
 wrapWithTerm cmd = term ++ " -e " ++ cmd
 wrapWithLess cmd = "bash -c '" ++ cmd ++ " 2>/dev/null | less -R'"
 
+rotateDisplayCmd direction = "xrandr --output HDMI-A-0 --mode 2560x1440 --rate 75 --rotate " ++ direction ++ " --dpi 110"
+
 appManagedHook = composeAll
    [ className =? "zoom" --> doShift zoomWorkspace]
 
@@ -48,6 +50,8 @@ rebindings = [
   , ("M-C-l", spawn "betterlockscreen --lock --off 10 --time-format '%H:%M'")
   , ("M-C-p", spawn "systemctl suspend")
   , ("M-C-b", sendMessage ToggleStruts)
+  , ("M-C-d", spawn $ wrapWithTerm $ rotateDisplayCmd "right")
+  , ("M-C-c", spawn $ wrapWithTerm $ rotateDisplayCmd "normal")
 
   -- apps
   , ("M-v", spawn $ wrapWithTerm $ wrapWithLess "curl wttr.in")
