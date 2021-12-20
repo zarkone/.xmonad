@@ -52,15 +52,16 @@ rebindings = [
   , ("M-C-b", sendMessage ToggleStruts)
   , ("M-C-d", spawn $ wrapWithTerm $ rotateDisplayCmd "right")
   , ("M-C-c", spawn $ wrapWithTerm $ rotateDisplayCmd "normal")
+  , ("M-q", kill)
+  , ("M-S-q", spawn "xmonad --recompile && xmonad --restart")
 
   -- apps
   , ("M-v", spawn $ wrapWithTerm $ wrapWithLess "curl wttr.in")
   , ("M-.", spawn $ wrapWithTerm $ wrapWithLess "xclip -selection c -o | xargs trans")
   , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
   , ("M-z", spawn $ wrapWithTerm "htop")
-  , ("M-x", kill)
   , ("M-b", banishScreen LowerRight)
-  , ("M-f", spawn $ wrapWithTerm "emacsclient -nw -a ''")
+  , ("M-f", spawn "emacsclient -c -a ''")
   , ("M-w", spawn "firefox")
   , ("M-u", spawn "pavucontrol")
   , ("M-p", spawn "rofi -location 2 -show run ")
