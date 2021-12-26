@@ -24,7 +24,7 @@ term = "alacritty"
 wrapWithTerm cmd = term ++ " -e " ++ cmd
 wrapWithLess cmd = "bash -c '" ++ cmd ++ " 2>/dev/null | less -R'"
 
-rotateDisplayCmd direction = "xrandr --output HDMI-A-0 --mode 2560x1440 --rate 75 --rotate " ++ direction ++ " --dpi 110"
+rotateDisplayCmd direction = "xrandr --output HDMI-A-0 --mode 2560x1440 --rate 75 --rotate " ++ direction ++ " --dpi 110 && feh --bg-center ~/pics/eva4.jpg"
 
 appManagedHook = composeAll
    [ className =? "zoom" --> doShift zoomWorkspace]
@@ -64,8 +64,8 @@ rebindings = [
   , ("M-f", spawn "emacsclient -c -a ''")
   , ("M-w", spawn "firefox")
   , ("M-u", spawn "pavucontrol")
-  , ("M-p", spawn "rofi -location 2 -show run ")
-  , ("M-l", spawn "rofi -location 2 -combi-modi window,drun -show combi -modi combi")
+  , ("M-'", spawn "rofi -location 2 -show run ")
+  , ("M-\\", spawn "rofi -location 2 -combi-modi window,drun -show combi -modi combi")
   , ("M-y", spawn "blueman-manager")
   , ("M-W", spawn "google-chrome-beta")
   -- windows
