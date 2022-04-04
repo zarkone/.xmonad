@@ -2,6 +2,7 @@ import System.IO
 import XMonad
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.Warp
+import XMonad.Actions.CopyWindow
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
@@ -15,6 +16,8 @@ import qualified XMonad.StackSet as W
 import XMonad
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.EZConfig
+import qualified XMonad.Util.ExtensibleState as XS
+import qualified Data.Map as Map
 -- module imports and other top level definitions
 
 myWorkspaces = ["!","@","#","$","%","^","&","*","("]
@@ -25,6 +28,17 @@ wrapWithTerm cmd = term ++ " -e " ++ cmd
 wrapWithLess cmd = "bash -c '" ++ cmd ++ " 2>/dev/null | less -R'"
 
 rotateDisplayCmd direction = "xrandr --output HDMI-A-0 --mode 2560x1440 --rate 75 --rotate " ++ direction ++ " --dpi 110 && feh --bg-center ~/pics/eva4.jpg"
+
+newtype IsRightDisplayRotation = IsRightDisplayRotation { getIsRightDisplayRotation :: Bool }
+  deriving (Show)
+instance ExtensionClass IsRightDisplayRotation where
+  initialValue = IsRightDisplayRotation False
+
+-- toggleDisplayOrientation :: X ()
+-- toggleDisplayOrientation = do
+--   IsRightDisplayRotation r <- IsRightDisplayRotation . liftX $ XS.get
+--   spawn $ wrapWithTerm $ rotateDisplayCmd $ if r then "right" else "normal"
+
 
 appManagedHook = composeAll
    [ className =? "zoom" --> doShift zoomWorkspace]
@@ -37,6 +51,7 @@ clearUnreadMail =
 
 rebindings = [
   ("M-=", spawn term)
+  -- , ("M-.", print "foo")
   , ("M-<Backspace>", spawn "dunstctl close-all")
   , ("M-]", spawn "dunstctl history-pop")
   , ("M-`", spawn "dunstctl set-paused toggle")
@@ -50,17 +65,17 @@ rebindings = [
   , ("M-C-l", spawn "betterlockscreen --lock --off 10 --time-format '%H:%M'")
   , ("M-C-p", spawn "systemctl suspend")
   , ("M-C-b", sendMessage ToggleStruts)
-  , ("M-C-d", spawn $ wrapWithTerm $ rotateDisplayCmd "right")
+  , ("M-C-d", spawn $ wrapWithTerm $ rotateDisplayCmd "left")
   , ("M-C-c", spawn $ wrapWithTerm $ rotateDisplayCmd "normal")
   , ("M-q", kill)
   , ("M-S-q", spawn "xmonad --recompile && xmonad --restart")
 
   -- apps
-  , ("M-v", spawn $ wrapWithTerm $ wrapWithLess "curl wttr.in")
+  , ("M-c", spawn $ wrapWithTerm $ wrapWithLess "curl wttr.in")
   , ("M-.", spawn $ wrapWithTerm $ wrapWithLess "xclip -selection c -o | xargs trans")
   , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
   , ("M-z", spawn $ wrapWithTerm "htop")
-  , ("M-b", banishScreen LowerRight)
+  , ("M-S-b", banishScreen LowerRight)
   , ("M-f", spawn "emacsclient -c -a ''")
   , ("M-w", spawn "firefox")
   , ("M-u", spawn "pavucontrol")
@@ -73,21 +88,22 @@ rebindings = [
   , ("M-r", windows $ W.greedyView "@")
   , ("M-s", windows $ W.greedyView "#")
   , ("M-t", windows $ W.greedyView "$")
-  , ("M-g", windows $ W.greedyView "%")
-  , ("M-n", windows $ W.greedyView "^")
-  , ("M-e", windows $ W.greedyView "&")
-  , ("M-i", windows $ W.greedyView "*")
-  , ("M-o", windows $ W.greedyView "(")
+  , ("M-d", windows $ W.greedyView "%")
+  , ("M-g", windows $ W.greedyView "^")
+  , ("M-p", windows $ W.greedyView "&")
+  , ("M-b", windows $ W.greedyView "*")
+  , ("M-v", windows $ W.greedyView "(")
 
   , ("M-M1-a", windows $ W.shift "!")
   , ("M-M1-r", windows $ W.shift "@")
   , ("M-M1-s", windows $ W.shift "#")
   , ("M-M1-t", windows $ W.shift "$")
-  , ("M-M1-g", windows $ W.shift "%")
-  , ("M-M1-n", windows $ W.shift "^")
-  , ("M-M1-e", windows $ W.shift "&")
-  , ("M-M1-i", windows $ W.shift "*")
-  , ("M-M1-o", windows $ W.shift "(")
+  , ("M-M1-d", windows $ W.shift "%")
+  , ("M-M1-g", windows $ W.shift "^")
+  , ("M-M1-p", windows $ W.shift "&")
+  , ("M-M1-b", windows $ W.shift "*")
+  , ("M-M1-v", windows $ W.shift "(")
+  , ("M-M1-j", windows $ copyToAll)
 
   -- multimonitor
   -- , ("M-a", viewScreen def 0)
@@ -104,16 +120,16 @@ main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
   xmonad $
     ewmh
-    defaultConfig
+    def
     { modMask = mod4Mask
-    , normalBorderColor = "#212"
+    , normalBorderColor = "#222"
     , focusedBorderColor = "purple"
     , terminal = "alacritty"
     , workspaces = myWorkspaces
     , manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig
       -- layoutHook = avoidStruts  $ layoutHook defaultConfig,
     , layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (TwoPanePersistent Nothing (3 / 100) (3 / 5))
-      -- layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2),
+    -- , layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2)
       -- layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (Tall 2 (3/100) (4/5)),
       -- this must be in this order, docksEventHook must be last
     , handleEventHook = handleEventHook defaultConfig <+> docksEventHook
