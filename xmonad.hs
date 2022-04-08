@@ -78,6 +78,7 @@ rebindings = [
   , ("M-S-b", banishScreen LowerRight)
   , ("M-f", spawn "emacsclient -c -a ''")
   , ("M-w", spawn "firefox")
+  , ("M-M1-w", spawn "firefox --new-window 'https://duckduckgo.com/'")
   , ("M-u", spawn "pavucontrol")
   , ("M-'", spawn "rofi -location 2 -show run ")
   , ("M-\\", spawn "rofi -location 2 -combi-modi window,drun -show combi -modi combi")
