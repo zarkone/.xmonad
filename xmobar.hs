@@ -15,8 +15,9 @@ Config { font = "xft:Iosevka:size=14:antialias=true"
        , overrideRedirect = True
        , commands = [
            Run StdinReader
-           , Run Mail [("<fc=yellow><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Gmail/INBOX"),
-                        ("<fc=#6b53ff><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Pitch/INBOX")]
+           , Run Mail [("<fc=yellow><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Gmail/INBOX")
+                      -- , ("<fc=#6b53ff><icon=/home/zarkone/.xmonad/xbm/mail.xbm/></fc> ", "~/Maildir/Pitch/INBOX")
+                      ]
            "mail"
            , Run Kbd [("us(rus)", " <fc=#212,yellow> ru </fc>"), ("us", "  us ")]
            , Run Date "%d/%m[%a]" "date" 10
