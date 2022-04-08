@@ -118,29 +118,32 @@ rebindings = [
   , ("<XF86AudioMute>", spawn "pamixer -t")
   ]
 
-myStartupHook = composeAll [ spawn $ wrapWithTerm $ rotateDisplayCmd "left"
-                           , setDefaultCursor xC_left_ptr
-                           , startupHook def
-                           ]
-
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
   xmonad $
     ewmh
     def
     { modMask = mod4Mask
-    , startupHook = myStartupHook
     , normalBorderColor = "#222"
     , focusedBorderColor = "purple"
     , terminal = "alacritty"
     , workspaces = myWorkspaces
-    , manageHook = appManagedHook <+> manageDocks <+> manageHook defaultConfig
+    , startupHook = composeAll [ startupHook def
+                               , spawn $ wrapWithTerm $ rotateDisplayCmd "left"
+                               , setDefaultCursor xC_left_ptr
+                               ]
+    , manageHook = composeAll [ manageHook def
+                              ,  appManagedHook
+                              , manageDocks
+                              ]
       -- layoutHook = avoidStruts  $ layoutHook defaultConfig,
     , layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (TwoPanePersistent Nothing (3 / 100) (3 / 5))
     -- , layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2)
       -- layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (Tall 2 (3/100) (4/5)),
       -- this must be in this order, docksEventHook must be last
-    , handleEventHook = handleEventHook defaultConfig <+> docksEventHook
+    , handleEventHook = composeAll [ handleEventHook def
+                                   , docksEventHook
+                                   ]
     , logHook =
         dynamicLogWithPP
         xmobarPP
