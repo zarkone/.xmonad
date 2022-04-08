@@ -9,6 +9,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Layout
 import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.TwoPanePersistent (TwoPanePersistent (..))
+import XMonad.Util.Cursor
 import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Run (spawnPipe)
 import qualified XMonad.StackSet as W
@@ -117,12 +118,18 @@ rebindings = [
   , ("<XF86AudioMute>", spawn "pamixer -t")
   ]
 
+myStartupHook = composeAll [ spawn $ wrapWithTerm $ rotateDisplayCmd "left"
+                           , setDefaultCursor xC_left_ptr
+                           , startupHook def
+                           ]
+
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
   xmonad $
     ewmh
     def
     { modMask = mod4Mask
+    , startupHook = myStartupHook
     , normalBorderColor = "#222"
     , focusedBorderColor = "purple"
     , terminal = "alacritty"
