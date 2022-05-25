@@ -52,7 +52,6 @@ clearUnreadMail =
 
 rebindings = [
   ("M-=", spawn term)
-  -- , ("M-.", print "foo")
   , ("M-<Backspace>", spawn "dunstctl close-all")
   , ("M-]", spawn "dunstctl history-pop")
   , ("M-`", spawn "dunstctl set-paused toggle")
@@ -60,8 +59,6 @@ rebindings = [
   , ("<Pause>", spawn "mpc toggle")
   , ("M-<Right>", spawn "mpc next")
   , ("M-<Left>", spawn "mpc prev")
-    -- , ("<XF86AudioPause>", spawn "mpc pause")
-    -- , ("<XF86AudioPlay>", spawn "mpc play")
   , ("<Print>", spawn screenshot)
   , ("M-C-l", spawn "betterlockscreen --lock --off 10 --time-format '%H:%M'")
   , ("M-C-p", spawn "systemctl suspend")
@@ -75,12 +72,13 @@ rebindings = [
   , ("M-c", spawn $ wrapWithTerm $ wrapWithLess "curl wttr.in")
   , ("M-.", spawn $ wrapWithTerm $ wrapWithLess "xclip -selection c -o | xargs trans")
   , ("M-m", spawn $ wrapWithTerm "ncmpcpp")
-  , ("M-z", spawn $ wrapWithTerm "htop")
-  , ("M-S-b", banishScreen LowerRight)
+  , ("M-z", spawn $ wrapWithTerm "gotop")
+  , ("M-x", banishScreen LowerRight)
   , ("M-f", spawn "emacsclient -c -a ''")
   , ("M-w", spawn "firefox")
+  , ("M-S-w", spawn "google-chrome-beta  --profile-directory='Profile 3' --new-window 'http://localhost:9666'")
   , ("M-M1-w", spawn "firefox --new-window 'https://duckduckgo.com/'")
-  , ("M-u", spawn "pavucontrol")
+  , ("M-u", spawn $ wrapWithTerm "pulsemixer")
   , ("M-'", spawn "rofi -location 2 -show run ")
   , ("M-\\", spawn "rofi -location 2 -combi-modi window,drun -show combi -modi combi")
   , ("M-y", spawn "blueman-manager")
@@ -120,8 +118,7 @@ rebindings = [
 
 main = do
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
-  xmonad $
-    ewmh
+  xmonad $ docks $ ewmh
     def
     { modMask = mod4Mask
     , normalBorderColor = "#222"
@@ -129,21 +126,18 @@ main = do
     , terminal = "alacritty"
     , workspaces = myWorkspaces
     , startupHook = composeAll [ startupHook def
-                               , spawn $ wrapWithTerm $ rotateDisplayCmd "left"
+                               -- , spawn $ wrapWithTerm $ rotateDisplayCmd "left"
                                , setDefaultCursor xC_left_ptr
                                ]
     , manageHook = composeAll [ manageHook def
                               ,  appManagedHook
-                              , manageDocks
                               ]
       -- layoutHook = avoidStruts  $ layoutHook defaultConfig,
-    , layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (TwoPanePersistent Nothing (3 / 100) (3 / 5))
-    -- , layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2)
+    -- , layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (TwoPanePersistent Nothing (3 / 100) (3 / 5))
+    , layoutHook = avoidStruts $ smartBorders $ Full ||| TwoPanePersistent Nothing (3 / 100) (1 / 2)
+    -- , layoutHook = avoidStruts $ smartBorders $ TwoPanePersistent Nothing (3 / 100) (1 / 2)
       -- layoutHook = avoidStruts $ smartBorders $ Full ||| Mirror (Tall 2 (3/100) (4/5)),
       -- this must be in this order, docksEventHook must be last
-    , handleEventHook = composeAll [ handleEventHook def
-                                   , docksEventHook
-                                   ]
     , logHook =
         dynamicLogWithPP
         xmobarPP
