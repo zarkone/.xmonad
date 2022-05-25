@@ -142,7 +142,7 @@ main = do
         dynamicLogWithPP
         xmobarPP
         { ppOutput = hPutStrLn xmproc
-        , ppTitle = xmobarColor "magenta" "" . shorten 30
+        , ppTitle = xmobarColor "magenta" "" . shorten 300
         , ppCurrent = xmobarColor "#111" "#f0f" . wrap " " " "
         , ppHidden = xmobarColor "cyan" "#111"
         , ppHiddenNoWindows = xmobarColor "#777" ""
