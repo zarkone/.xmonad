@@ -60,7 +60,7 @@ rebindings = [
   , ("M-<Right>", spawn "mpc next")
   , ("M-<Left>", spawn "mpc prev")
   , ("<Print>", spawn screenshot)
-  , ("M-C-l", spawn "betterlockscreen --lock --off 10 --time-format '%H:%M'")
+  , ("M-M1-l", spawn "betterlockscreen --lock --off 10 --time-format '%H:%M' --wallpaper-cmd /home/zarkone/.fehbsa=g")
   , ("M-C-p", spawn "systemctl suspend")
   , ("M-C-b", sendMessage ToggleStruts)
   , ("M-C-d", spawn $ wrapWithTerm $ rotateDisplayCmd "left")
@@ -77,13 +77,19 @@ rebindings = [
   , ("M-f", spawn "emacsclient -c -a ''")
   , ("M-w", spawn "firefox")
   , ("M-S-w", spawn "google-chrome-beta  --profile-directory='Profile 3' --new-window 'http://localhost:9666'")
-  , ("M-M1-w", spawn "firefox --new-window 'https://duckduckgo.com/'")
+  , ("M-M1-w", spawn "firefox --new-window 'https://search.brave.com/'")
   , ("M-u", spawn $ wrapWithTerm "pulsemixer")
   , ("M-'", spawn "rofi -location 2 -show run ")
   , ("M-\\", spawn "rofi -location 2 -combi-modi window,drun -show combi -modi combi")
   , ("M-y", spawn "blueman-manager")
+  , ("M-M1-y", spawn "/home/zarkone/code/rofi-bluetooth/rofi-bluetooth")
   , ("M-W", spawn "google-chrome-beta")
+
   -- windows
+  , ("M-n", windows W.focusDown)
+  , ("M-e", windows W.focusUp)
+
+  -- workspaces
   , ("M-a", windows $ W.greedyView "!")
   , ("M-r", windows $ W.greedyView "@")
   , ("M-s", windows $ W.greedyView "#")
@@ -143,8 +149,8 @@ main = do
         xmobarPP
         { ppOutput = hPutStrLn xmproc
         , ppTitle = xmobarColor "magenta" "" . shorten 300
-        , ppCurrent = xmobarColor "#111" "#f0f" . wrap " " " "
-        , ppHidden = xmobarColor "cyan" "#111"
+        , ppCurrent = xmobarColor "#224" "#f0f" . wrap " " " "
+        , ppHidden = xmobarColor "#49fcb7" "#224"
         , ppHiddenNoWindows = xmobarColor "#777" ""
         }
     }

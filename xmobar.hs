@@ -1,6 +1,6 @@
 Config { font = "xft:Iosevka:size=14:antialias=true"
        , border = NoBorder
-       , bgColor = "#111"
+       , bgColor = "#224"
        , fgColor = "cyan"
        , alpha = 255
        , position = Top
